@@ -14,9 +14,6 @@ library(openxlsx)
 library(hpiR)
 
 
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
 
 ### Nettoyage de l'espace de travail
 rm(list = ls())
@@ -30,7 +27,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
     
     Index_partner <- read.csv2("./scripts/Edouard/Partner_index_results.csv", row.names = NULL)
     
-    dir.create(paste0("./scripts/Edouard/Partner_index/Figures/", Ville_cons, "_", Type))
+    dir.create(paste0("./Figures/Figures_indices/Partenaires/", Ville_cons, "_", Type))
     
     Index_partner <- Index_partner %>%
       filter(Ville == Ville_cons,
@@ -40,7 +37,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
              Part_value_Reste_du_monde_percent = Part_value_Reste_du_monde / Part_value_All)
     
     
-    png(paste0("./scripts/Edouard/Partner_index/Figures/", Ville_cons, "_", Type, "/Index_value.png"),      
+    png(paste0("./Figures/Figures_indices/Partenaires/", Ville_cons, "_", Type, "/Index_value.png"),      
         width = 5000,
         height = 2700,
         res = 500)
@@ -54,7 +51,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
     
     dev.off()
     
-    png(paste0("./scripts/Edouard/Partner_index/Figures/", Ville_cons, "_", Type, "/Composition_volume.png"),      
+    png(paste0("./Figures/Figures_indices/Partenaires/", Ville_cons, "_", Type, "/Composition_volume.png"),      
         width = 5000,
         height = 2700,
         res = 500)
@@ -68,7 +65,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
     
     dev.off()
     
-    png(paste0("./scripts/Edouard/Partner_index/Figures/", Ville_cons, "_", Type, "/Composition_part.png"),      
+    png(paste0("./Figures/Figures_indices/Partenaires/", Ville_cons, "_", Type, "/Composition_part.png"),      
         width = 5000,
         height = 2700,
         res = 500)
@@ -105,7 +102,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
 
 ### Calcul regression des trends par secteur
 
-Index_partner <- read.csv2("./scripts/Edouard/Partner_index_results.csv", row.names = NULL)
+Index_partner <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Partner_index_results.csv", row.names = NULL)
 Index_partner <- Index_partner %>%
   mutate_if(is.character, as.factor) %>%
   mutate(Partner = relevel(Partner, "All"),
@@ -126,7 +123,7 @@ summary(Reg_trend_categ)
 
 
 
-Index_partner_global <- read.csv2("./scripts/Edouard/Partner_index_results_global.csv", row.names = NULL)
+Index_partner_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Partner_index_results_global.csv", row.names = NULL)
 Index_partner_global <- Index_partner_global %>%
   mutate_if(is.character, as.factor) %>%
   filter(Exports_imports == "Exports", Partner != "All")
@@ -141,7 +138,7 @@ summary(Reg_trend_partner_global)
 
 
 
-Index_partner_global <- read.csv2("./scripts/Edouard/Partner_index_results_global.csv", row.names = NULL)
+Index_partner_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Partner_index_results_global.csv", row.names = NULL)
 
 Terme_echange_rdm <- Index_partner_global %>%
   filter(Partner == "Reste_du_monde") %>%
@@ -156,7 +153,7 @@ plot(drop_na(Terme_echange_rdm[, c("year", "Terme_echange_rdm")]), type = "o")
 
 
 
-Index_partner_global <- read.csv2("./scripts/Edouard/Partner_index_results_global.csv", row.names = NULL)
+Index_partner_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Partner_index_results_global.csv", row.names = NULL)
 
 Terme_echange_eem <- Index_partner_global %>%
   filter(Partner == "Europe_et_Mediterranee") %>%
@@ -174,7 +171,7 @@ plot(drop_na(Terme_echange_eem[, c("year", "Terme_echange_eem")]), type = "o")
 
 
 
-Index_partner_global <- read.csv2("./scripts/Edouard/Partner_index_results_global.csv", row.names = NULL)
+Index_partner_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Partner_index_results_global.csv", row.names = NULL)
 
 Index_eur_imports <- Index_partner_global %>%
   filter(Partner == "Europe_et_Mediterranee" & Exports_imports == "Imports")

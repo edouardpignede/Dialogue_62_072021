@@ -8,9 +8,6 @@ library(modern)
 
 rm(list = ls())
 
-### A définir
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
 
 
 ### Cette fonction permet le filtrage de la base de données selon les parmètres suivants (valeurs par défaut):
@@ -105,7 +102,7 @@ Data_filtrage <- function(Ville,
 ## Tri par secteur et par partenaire possible
 Read_bdd_courante <- function(Ville, Exports_imports, Correction_indice_Ag, Product_sector, Partner) {
   ### On importe la base de données courante
-  bdd_courante <- read.csv(unz("./base/bdd courante.csv.zip", "bdd courante.csv") , encoding = "UTF-8")
+  bdd_courante <- read.csv(unz("./Bases_de_donnees_initiales/bdd courante.csv.zip", "bdd courante.csv") , encoding = "UTF-8")
   
 
   ### Filtrage initiale de la base de données
@@ -143,7 +140,7 @@ Read_bdd_courante <- function(Ville, Exports_imports, Correction_indice_Ag, Prod
   ### Correction indice Ag
   if (Correction_indice_Ag) {
     ### Chargement de la base de données de la valeur de l'argent
-    Ag_value <- read.csv2("./scripts/Edouard/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
+    Ag_value <- read.csv2("./Bases_de_donnees_initiales/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
     ### On fusionne les deux bases de données
     bdd_courante <- merge(bdd_courante, Ag_value, "year" = "year", all.x = T)
     ### On corrige les valeurs des prix
@@ -168,7 +165,7 @@ Read_bdd_courante <- function(Ville, Exports_imports, Correction_indice_Ag, Prod
   ### Correction indice Ag
   if (Correction_indice_Ag) {
     ### Chargement de la base de données de la valeur de l'argent
-    Ag_value <- read.csv2("./scripts/Edouard/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
+    Ag_value <- read.csv2("./Bases_de_donnees_initiales/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
     ### On fusionne les deux bases de données
     Data <- merge(Data, Ag_value, "year" = "year", all.x = T)
     ### On corrige les valeurs des prix
@@ -315,7 +312,7 @@ Remove_prod_problems <- function(Data) {
   
 ### On conserve uniquement les produits selectionnés par Loic Charles
 Keep_prod_select <- function(Data) {
-  Product_selection <- read.csv2("./scripts/Edouard/Product_selection.csv")
+  Product_selection <- read.csv2("./Bases_de_donnees_initiales/Product_selection.csv")
   
   Product_selection <- Product_selection %>%
     filter(Product_selection == 1)

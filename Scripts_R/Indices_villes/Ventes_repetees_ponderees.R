@@ -17,17 +17,11 @@ library(skedastic)
 library(hpiR)
 
 
-
-
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
-
 ### Nettoyage de l'espace de travail
 rm(list = ls())
 
 ### On charge la fonction du script Filtrage.R
-source("./scripts/Edouard/Indice_ville_scripts/Filtrage.R")
+source("./Scripts_R/Indices_villes/Filtrage.R")
 
 
 ### Cette fonction calcule l'index des ventes répétés à partir d'un objet Data retourné
@@ -176,13 +170,13 @@ Plot_index <- function(Index,
   
   ### Ouverture d'une fenêtre pour l'enregistrement du graphique
   if (!Smooth) {
-    png(filename = paste0("./scripts/Edouard/Figure_index/", Title_file, ".png"),
+    png(filename = paste0("./Figures/Figures_indices/", Title_file, ".png"),
         width = 5000,
         height = 2700,
         res = 500)
     
   } else {
-    png(filename = paste0("./scripts/Edouard/Figure_index_Smooth/", Title_file, ".png"),
+    png(filename = paste0("./Figures/Figures_indices/", Title_file, "_Smooth.png"),
         width = 5000,
         height = 2700,
         res = 500)

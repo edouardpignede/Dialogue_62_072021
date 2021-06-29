@@ -15,10 +15,6 @@ library(openxlsx)
 library(hpiR)
 
 
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
-
 ### Nettoyage de l'espace de travail
 rm(list = ls())
 
@@ -40,7 +36,7 @@ Calcul_termes_echange <- function()
 
 {
   ### On charge les onnées d'index 
-  Index_res <- read.csv2("./scripts/Edouard/Index_results.csv", row.names = NULL, dec = ",")
+  Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results.csv", row.names = NULL, dec = ",")
   
   
   Index_res <- Index_res %>%
@@ -63,7 +59,7 @@ Calcul_termes_echange <- function()
   
   ### On écrit le csv résultant
   write.csv2(Termes_echange_res,
-             "./scripts/Edouard/Termes_echange_results.csv",
+             "./Bases_de_donnees_finales/Indices_villes/Termes_echange_results.csv",
              row.names = F)
   
   

@@ -14,15 +14,12 @@ library(openxlsx)
 library(hpiR)
 
 
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
 
 ### Nettoyage de l'espace de travail
 rm(list = ls())
 
 ### On charge les fonctions des scripts Filtrage.R et Ventes_repetees_ponderees.R
-source("./scripts/Edouard/Indice_ville_scripts/Ventes_repetees_ponderees.R")
+source("./Scripts_R/Indices_villes/Ventes_repetees_ponderees.R")
 
 
 ### La fonction Update_base crée le csv Index_results.csv qui calcule l'indice des prix 
@@ -59,13 +56,13 @@ Update_base <- function(Smooth = F)
   if (!Smooth) {
   ### Ecriture des lignes du csv
   write.csv2(Index_pond,
-             "./scripts/Edouard/Index_results.csv",
+             "./Bases_de_donnees_finales/Indices_villes/Index_results.csv",
              row.names = F)
     
   } else {
     ### Ecriture des lignes du csv
     write.csv2(Index_pond,
-               "./scripts/Edouard/Index_results_Smooth.csv",
+               "./Bases_de_donnees_finales/Indices_villes/Index_results_Smooth.csv",
                row.names = F)
   }
                             
@@ -158,7 +155,7 @@ Add_new_param <- function(Outliers = T,
   
   if (!Smooth) {
     ### On charge les valeurs actuelles du csv
-    Index_res <- read.csv2("./scripts/Edouard/Index_results.csv", row.names = NULL)
+    Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results.csv", row.names = NULL)
     
     ### On ajoute le nouveau dataframe
     Index_res <- rbind(Index_res, Index_pond)
@@ -168,12 +165,12 @@ Add_new_param <- function(Outliers = T,
     
     ### On écrit le résulat dans le csv
     write.csv2(Index_res,
-              "./scripts/Edouard/Index_results.csv",
+               "./Bases_de_donnees_finales/Indices_villes/Index_results.csv",
               row.names = F)
   
   } else {
     ### On charge les valeurs actuelles du csv
-    Index_res <- read.csv2("./scripts/Edouard/Index_results_Smooth.csv", row.names = NULL)
+    Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results_Smooth.csv", row.names = NULL)
     
     ### On ajoute le nouveau dataframe
     Index_res <- rbind(Index_res, Index_pond)
@@ -183,7 +180,7 @@ Add_new_param <- function(Outliers = T,
     
     ### On écrit le résulat dans le csv
     write.csv2(Index_res,
-               "./scripts/Edouard/Index_results_Smooth.csv",
+               "./Bases_de_donnees_finales/Indices_villes/Index_results_Smooth.csv",
                row.names = F)
   }
   

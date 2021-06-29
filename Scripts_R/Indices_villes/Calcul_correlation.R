@@ -14,15 +14,12 @@ library(openxlsx)
 library(hpiR)
 
 
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
-
 ### Nettoyage de l'espace de travail
 rm(list = ls())
 
 
-### Cette fonction permet de remplir l'excel Correlation_matrix.xlsx
+
+### Cette fonction permet de remplir l'excel Correlation_matrix_parametres.xlsx
 ### Cette excel possède un onglet par Ville + Type avec Type = Imports ou Exports
 ### Pour chaque indice il calcule les corrélations possibles entre l'ensemble des variations des paramètres 
 ### utilisés dans le fichier csv Index_results.csv
@@ -32,7 +29,7 @@ Calcul_correlation_matrix <- function()
 {
 
   ### On charge les valeurs de Index_results.csv
-  Index_res <- read.csv2("./scripts/Edouard/Index_results.csv", row.names = NULL, dec = ",")
+  Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results.csv", row.names = NULL, dec = ",")
   
   ### Création d'un workbook (objet comparable à un excel et converti en excel à la fin)
   Cor_matrix_workbook <- createWorkbook()
@@ -120,7 +117,7 @@ Calcul_correlation_matrix <- function()
   }
   
   ### On sauvegarde le workbook dans l'excel Correlation_matrix.xlsx    
-  saveWorkbook(Cor_matrix_workbook, "./scripts/Edouard/Correlation_matrix.xlsx",
+  saveWorkbook(Cor_matrix_workbook, "./Bases_de_donnees_finales_Indices_villes/Correlations_systematiques/Correlation_matrix_parametres.xlsx",
                overwrite = T)      
         
 }
@@ -130,14 +127,15 @@ Calcul_correlation_matrix <- function()
 
 
 ### Calcul de la corrélation des indices entre les différentes villes étudiées
-### uniquement pour la baseline
+### uniquement pour la baseline, et pour différentes périodes comprises 
+### entre year_deb et year_fin
 
 
-Calcul_correlation_matrix_ville <- function(year_deb = 1700, year_fin = 1900) 
+Calcul_correlation_matrix_ville <- function(year_deb = 1716, year_fin = 1789) 
   
 {
   ### On charge les valeurs de Index_results.csv
-  Index_res <- read.csv2("./scripts/Edouard/Index_results.csv", row.names = NULL, dec = ",")
+  Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results.csv", row.names = NULL, dec = ",")
   
   ### On conserve uniquement la baseline
   Index_res_baseline <- Index_res %>%
@@ -198,11 +196,17 @@ Calcul_correlation_matrix_ville <- function(year_deb = 1700, year_fin = 1900)
         
   }
   
-### On sauvegarde le workbook dans l'excel Correlation_matrix.xlsx    
-saveWorkbook(Cor_matrix_workbook, paste0("./scripts/Edouard/Correlation_matrix_ville", 
+### On sauvegarde le workbook dans l'excel Correlation_matrix_ville_year_deb_year_fin.xlsx    
+saveWorkbook(Cor_matrix_workbook, paste0("./Bases_de_donnees_finales/Indices_villes/Correlation_indices/Correlation_matrix_ville", 
                                          year_deb, "_", year_fin,".xlsx"),
              overwrite = T)    
 }
+
+
+
+
+
+
 
 
 

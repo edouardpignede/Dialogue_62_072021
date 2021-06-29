@@ -15,10 +15,6 @@ library(modern)
 
 rm(list = ls())
 
-### A définir
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
-
 
 ### Cette fonction permet le filtrage de la base de données selon les paramètres suivants pour la réalisation de l'indice global 
 ### calculé à partir d'un filtre prod/ville
@@ -148,7 +144,7 @@ Plot_index <- function(Index, ### Choix du port d'étude
   
   
   ### Ouverture d'une fenêtre pour l'enregistrement du graphique
-  png(filename = paste0("./scripts/Edouard/Figure_index_global/", Title, ".png"),
+  png(filename = paste0("./Figures/Figures_indices/National/", Title, ".png"),
       width = 5000,
       height = 2700,
       res = 500)
@@ -231,7 +227,7 @@ Filter_calcul_index <- function(Exports_imports = "Imports") ### On conserve les
 ### Lecture de la base de donnée courante. Conservation Exports ou Imports d'une ville
 Read_bdd_courante <- function(Exports_imports) {
   ### On importe la base de données courante
-  bdd_courante <- read.csv(unz("./base/bdd courante.csv.zip", "bdd courante.csv") , encoding = "UTF-8")
+  bdd_courante <- read.csv(unz("./Bases_de_donnees_initiales/bdd courante.csv.zip", "bdd courante.csv") , encoding = "UTF-8")
   
   ### Calcule de la valeur totale du flux et du commerce initiale
   Value_com_tot <- bdd_courante %>%

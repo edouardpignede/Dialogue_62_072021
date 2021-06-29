@@ -15,10 +15,6 @@ library(modern)
 
 rm(list = ls())
 
-### A définir
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
-
 
 ### Cette fonction permet le filtrage de la base de données selon les paramètres suivants pour la réalisation de l'indice global 
 ### calculé à partir d'un filtre prod/ville
@@ -151,7 +147,7 @@ Plot_index <- function(Index, ### Choix du port d'étude
   
   
   ### Ouverture d'une fenêtre pour l'enregistrement du graphique
-  png(filename = paste0("./scripts/Edouard/Figure_index_global/", Title, ".png"),
+  png(filename = paste0("./Figures/Figures_indices/National/", Title, ".png"),
       width = 5000,
       height = 2700,
       res = 500)
@@ -228,11 +224,11 @@ Filter_calcul_index <- function(Exports_imports = "Imports", ### On conserve les
   ### Ecriture de l'indice dans le fichier Indice_global_value
   if (Exports_imports == "Imports") {
     write.csv2(rt_index, 
-               file = "./scripts/Edouard/Indice_global_value/Indice_global_sans_filtre_imports.csv",
+               file = "./Bases_de_donnees_finales/Indices_globaux/Indice_global_sans_filtre_imports.csv",
                row.names = F)
   } else {
     write.csv2(rt_index, 
-               file = "./scripts/Edouard/Indice_global_value/Indice_global_sans_filtre_exports.csv",
+               file = "./Bases_de_donnees_finales/Indices_globaux/Indice_global_sans_filtre_exports.csv",
                row.names = F)
   }
   
@@ -250,7 +246,7 @@ Filter_calcul_index <- function(Exports_imports = "Imports", ### On conserve les
 ### Lecture de la base de donnée courante. Conservation Exports ou Imports d'une ville
 Read_bdd_courante <- function(Exports_imports, Correction_indice_Ag, Product_sector, Partner) {
   ### On importe la base de données courante
-  bdd_courante <- read.csv(unz("./base/bdd courante.csv.zip", "bdd courante.csv") , encoding = "UTF-8")
+  bdd_courante <- read.csv(unz("./Bases_de_donnees_initiales/bdd courante.csv.zip", "bdd courante.csv") , encoding = "UTF-8")
   
   
   ### Filtrage initial de la base de données
@@ -284,7 +280,7 @@ Read_bdd_courante <- function(Exports_imports, Correction_indice_Ag, Product_sec
   ### Correction indice Ag
   if (Correction_indice_Ag) {
     ### Chargement de la base de données de la valeur de l'argent
-    Ag_value <- read.csv2("./scripts/Edouard/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
+    Ag_value <- read.csv2("./Bases_de_donnees_initiales/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
     ### On fusionne les deux bases de données
     bdd_courante <- merge(bdd_courante, Ag_value, "year" = "year", all.x = T)
     ### On corrige les valeurs des prix
@@ -316,7 +312,7 @@ Read_bdd_courante <- function(Exports_imports, Correction_indice_Ag, Product_sec
   ### Correction indice Ag
   if (Correction_indice_Ag) {
     ### Chargement de la base de données de la valeur de l'argent
-    Ag_value <- read.csv2("./scripts/Edouard/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
+    Ag_value <- read.csv2("./Bases_de_donnees_initiales/Silver_price/Silver_equivalent_of_the_lt_and_franc_(Hoffman).csv")
     ### On fusionne les deux bases de données
     Data <- merge(Data, Ag_value, "year" = "year", all.x = T)
     ### On corrige les valeurs des prix

@@ -14,9 +14,6 @@ library(openxlsx)
 library(hpiR)
 
 
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
 
 ### Nettoyage de l'espace de travail
 rm(list = ls())
@@ -26,9 +23,9 @@ rm(list = ls())
 for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes", "Bayonne")) {
   for (Type in c("Imports", "Exports")) {
     
-    Index_composition <- read.csv2("./scripts/Edouard/Composition_index_results.csv", row.names = NULL)
+    Index_composition <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Composition_index_results.csv", row.names = NULL)
     
-    dir.create(paste0("./scripts/Edouard/Composition_index/Figures/", Ville_cons, "_", Type))
+    dir.create(paste0("./Figures/Figures_indices/Composition/", Ville_cons, "_", Type))
     
     Index_composition <- Index_composition %>%
       filter(Ville == Ville_cons,
@@ -39,7 +36,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
              Part_value_Agriculture_percent = Part_value_Agriculture / Part_value_All)
     
     
-    png(paste0("./scripts/Edouard/Composition_index/Figures/", Ville_cons, "_", Type, "/Index_value.png"),      
+    png(paste0("./Figures/Figures_indices/Composition/", Ville_cons, "_", Type, "/Index_value.png"),      
         width = 5000,
         height = 2700,
         res = 500)
@@ -54,7 +51,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
     
     dev.off()
     
-    png(paste0("./scripts/Edouard/Composition_index/Figures/", Ville_cons, "_", Type, "/Composition_volume.png"),      
+    png(paste0("./Figures/Figures_indices/Composition/", Ville_cons, "_", Type, "/Composition_volume.png"),      
         width = 5000,
         height = 2700,
         res = 500)
@@ -69,7 +66,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
     
     dev.off()
     
-    png(paste0("./scripts/Edouard/Composition_index/Figures/", Ville_cons, "_", Type, "/Composition_part.png"),      
+    png(paste0("./Figures/Figures_indices/Composition/", Ville_cons, "_", Type, "/Composition_part.png"),      
         width = 5000,
         height = 2700,
         res = 500)
@@ -107,7 +104,7 @@ for (Ville_cons in c("Marseille", "Bordeaux", "La Rochelle", "Nantes", "Rennes",
 
 ### Calcul regression des trends par secteur
 
-Index_composition <- read.csv2("./scripts/Edouard/Composition_index_results.csv", row.names = NULL)
+Index_composition <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Composition_index_results.csv", row.names = NULL)
 Index_composition <- Index_composition %>%
   mutate_if(is.character, as.factor) %>%
   mutate(Product_sector = relevel(Product_sector, "All"),
@@ -124,7 +121,7 @@ summary(Reg_trend_categ)
 
 
 
-Index_composition_global <- read.csv2("./scripts/Edouard/Composition_index_results_global.csv", row.names = NULL)
+Index_composition_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv", row.names = NULL)
 Index_composition_global <- Index_composition_global %>%
   mutate_if(is.character, as.factor) %>%
   mutate(Product_sector = relevel(Product_sector, "All"))
@@ -140,7 +137,7 @@ summary(Reg_trend_categ_global)
 
 
 
-Index_composition_global <- read.csv2("./scripts/Edouard/Composition_index_results_global.csv", row.names = NULL)
+Index_composition_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv", row.names = NULL)
 
 Terme_echange_pg <- Index_composition_global %>%
   filter(Product_sector == "Primary goods") %>%
@@ -155,7 +152,7 @@ plot(drop_na(Terme_echange_pg[, c("year", "Terme_echange_pg")]), type = "o", pch
 
 
 
-Index_composition_global <- read.csv2("./scripts/Edouard/Composition_index_results_global.csv", row.names = NULL)
+Index_composition_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv", row.names = NULL)
 
 Terme_echange_pg <- Index_composition_global %>%
   filter(Product_sector == "Manufactures") %>%
@@ -174,7 +171,7 @@ lines(drop_na(Terme_echange_pg[, c("year", "Terme_echange_pg")]), type = "o", pc
 
 
 
-Index_composition_global <- read.csv2("./scripts/Edouard/Composition_index_results_global.csv", row.names = NULL)
+Index_composition_global <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv", row.names = NULL)
 
 Index_manufactures_imports <- Index_composition_global %>%
   filter(Product_sector == "Manufactures" & Exports_imports == "Imports")

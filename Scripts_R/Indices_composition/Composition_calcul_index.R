@@ -14,15 +14,11 @@ library(openxlsx)
 library(hpiR)
 
 
-### A définir: emplacement du working directory
-setwd("C:/Users/pignede/Documents/GitHub/toflit18_data")
-### setwd("/Users/Edouard/Dropbox (IRD)/IRD/Missions/Marchandises_18eme")
-
 ### Nettoyage de l'espace de travail
 rm(list = ls())
 
 ### On charge les fonctions des scripts Filtrage.R et Ventes_repetees_ponderees.R
-source("./scripts/Edouard/Indice_ville_scripts/Ventes_repetees_ponderees.R")
+source("./Scripts_R/Indices_villes/Ventes_repetees_ponderees.R")
 
 
 ### Index port ----
@@ -44,7 +40,7 @@ Sector_index_calcul <- function()
   
   ### Ecriture des lignes du csv
   write.csv2(Index_pond,
-             "./scripts/Edouard/Composition_index_results.csv",
+             "./Bases_de_donnees_finales/Indices_villes/Composition_index_results.csv",
              row.names = F)
   
   
@@ -103,7 +99,7 @@ Add_new_sector <- function(Product_sector = "All")
   }
   
   ### On charge les valeurs actuelles du csv
-  Index_res <- read.csv2("./scripts/Edouard/Composition_index_results.csv", row.names = NULL)
+  Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Composition_index_results.csv", row.names = NULL)
   
   ### On ajoute le nouveau dataframe
   Index_res <- rbind(Index_res, Index_pond)
@@ -113,7 +109,7 @@ Add_new_sector <- function(Product_sector = "All")
   
   ### On écrit le résulat dans le csv
   write.csv2(Index_res,
-             "./scripts/Edouard/Composition_index_results.csv",
+             "./Bases_de_donnees_finales/Indices_villes/Composition_index_results.csv",
              row.names = F)
   
   
@@ -142,7 +138,7 @@ Sector_index_global_calcul <- function()
 
 ### Ecriture des lignes du csv
 write.csv2(Index_pond,
-           "./scripts/Edouard/Composition_index_results_global.csv",
+           "./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv",
            row.names = F)
 
 
@@ -197,7 +193,7 @@ Add_new_sector_global <- function(Product_sector = "All")
   }
   
   ### On charge les valeurs actuelles du csv
-  Index_res <- read.csv2("./scripts/Edouard/Composition_index_results_global.csv", row.names = NULL)
+  Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv", row.names = NULL)
   
   ### On ajoute le nouveau dataframe
   Index_res <- rbind(Index_res, Index_pond)
@@ -207,7 +203,7 @@ Add_new_sector_global <- function(Product_sector = "All")
   
   ### On écrit le résulat dans le csv
   write.csv2(Index_res,
-             "./scripts/Edouard/Composition_index_results_global.csv",
+             "./Bases_de_donnees_finales/Indices_globaux/Composition_index_results_global.csv",
              row.names = F)
   
   
