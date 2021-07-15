@@ -34,7 +34,7 @@ En moyennant la valeur de ces corrélations sur l'ensemble des ports, on constat
  
 ### Graphique des indices
  
-Dans le dossier *Figures_indices*, on trouve l'ensemble des représentations des indices d'importations et d'exportations pour les ports de Bordeaux, Marseille, Nantes, La Rochelle et Bayonne. L'axe de droite permet d'observer la part du commerce du port (imports ou exports) qui est prise en compte chaque année dans la construction de l'indice correspondant. Celle-ci est comprise en moyenne autour de 80%.
+Dans le dossier *Figures_indices*, on trouve l'ensemble des représentations des indices d'importations et d'exportations pour les ports de Bordeaux, Marseille, Nantes, La Rochelle et Bayonne. Ainsi que les indices nationaux, les indices par composition et par partenaires. On peut aussi voir les indices pour la baseline et pour l'ensemble des indices où l'on modifie un paramètre de la baseline à la fois (le titre du graphe donne la valeur des paramètres utilisés). L'axe de droite permet d'observer la part du commerce du port (imports ou exports) qui est prise en compte chaque année dans la construction de l'indice correspondant. Celle-ci est comprise en moyenne autour de 80%.
  
  
 
