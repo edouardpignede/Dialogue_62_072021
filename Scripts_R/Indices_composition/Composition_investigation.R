@@ -13,7 +13,7 @@ library(openxlsx)
 
 library(hpiR)
 
-
+library(car)
 
 ### Nettoyage de l'espace de travail
 rm(list = ls())
@@ -115,8 +115,9 @@ Reg_trend_categ <- lm(log(Index_value) ~ year + Ville + Ville*year + Product_sec
 
 summary(Reg_trend_categ)
 
-
-
+### Test de différence des coefficients
+linearHypothesis(Reg_trend_categ, 
+                 "year:Product_sectorPrimary coloniaux = year:Product_sectorPrimary european")
 
 
 

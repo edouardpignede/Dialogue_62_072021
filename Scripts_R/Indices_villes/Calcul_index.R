@@ -34,7 +34,7 @@ source("./Scripts_R/Indices_villes/Ventes_repetees_ponderees.R")
 # Pond_log = F
 ### ainsi que pour l'autre valeur de chaque paramètre avec les valueurs par défaut
 
-Update_base <- function(Smooth = F) 
+Update_base <- function() 
   
 {
   ### Création des lignes du csv 
@@ -53,32 +53,26 @@ Update_base <- function(Smooth = F)
                             "Part_value" = numeric(),
                             "Part_flux" = numeric())
   
-  if (!Smooth) {
+  
   ### Ecriture des lignes du csv
   write.csv2(Index_pond,
              "./Bases_de_donnees_finales/Indices_villes/Index_results.csv",
              row.names = F)
     
-  } else {
-    ### Ecriture des lignes du csv
-    write.csv2(Index_pond,
-               "./Bases_de_donnees_finales/Indices_villes/Index_results_Smooth.csv",
-               row.names = F)
-  }
                             
                             
   
   ### Ajout au csv de la baseline et de la baseline + changement d'un paramètre pour chaque paramètre
   ### à l'aide de la fonction Add_new_parma défini ci-dessous
-  Add_new_param(Smooth = Smooth)
-  Add_new_param(Outliers = F, Smooth = Smooth)
-  Add_new_param(Outliers_coef = 3.5, Smooth = Smooth)
-  Add_new_param(Trans_number = 20, Smooth = Smooth)
-  Add_new_param(Prod_problems = T, Smooth = Smooth)
-  Add_new_param(Product_select = T, Smooth = Smooth)
-  Add_new_param(Remove_double = F, Smooth = Smooth)
-  Add_new_param(Ponderation = F, Smooth = Smooth)
-  Add_new_param(Pond_log = T, Smooth = Smooth)
+  Add_new_param()
+  Add_new_param(Outliers = F)
+  Add_new_param(Outliers_coef = 3.5)
+  Add_new_param(Trans_number = 20)
+  Add_new_param(Prod_problems = T)
+  Add_new_param(Product_select = T)
+  Add_new_param(Remove_double = F)
+  Add_new_param(Ponderation = F)
+  Add_new_param(Pond_log = T)
 
 
 }
@@ -94,8 +88,7 @@ Add_new_param <- function(Outliers = T,
                           Product_select = F,
                           Remove_double = T,
                           Ponderation = T,
-                          Pond_log = F,
-                          Smooth = F) 
+                          Pond_log = F) 
 {
   ### Création des titres des lignes
   Index_pond <-  data.frame("Ville" = factor(),
@@ -126,8 +119,7 @@ Add_new_param <- function(Outliers = T,
                                    Product_select = Product_select, ### Conserve-t-on uniquement les produits sélectionnés par Loïc
                                    Remove_double = Remove_double, ### Retire-t-on les doublons
                                    Ponderation = Ponderation, ### Calcul de l'indice avec ponderation ?
-                                   Pond_log = Pond_log,
-                                   Smooth = Smooth)
+                                   Pond_log = Pond_log)
       
       ### A jout de l'index et des parts de flux et de valeur dans le commerce total, ainsi que la valeur des paramètres 
       ### au dataframe
@@ -153,36 +145,22 @@ Add_new_param <- function(Outliers = T,
     }
   }
   
-  if (!Smooth) {
-    ### On charge les valeurs actuelles du csv
-    Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results.csv", row.names = NULL)
-    
-    ### On ajoute le nouveau dataframe
-    Index_res <- rbind(Index_res, Index_pond)
-    ### On retire les lignes si elles sont déja présentes dans le csv
-    ### Par défaut, le nouveau résultat met à jour le précédent
-    Index_res <- Index_res[!duplicated(Index_res[ , 1:11], fromLast = T), ]
-    
-    ### On écrit le résulat dans le csv
-    write.csv2(Index_res,
-               "./Bases_de_donnees_finales/Indices_villes/Index_results.csv",
-              row.names = F)
+
+  ### On charge les valeurs actuelles du csv
+  Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results.csv", row.names = NULL)
   
-  } else {
-    ### On charge les valeurs actuelles du csv
-    Index_res <- read.csv2("./Bases_de_donnees_finales/Indices_villes/Index_results_Smooth.csv", row.names = NULL)
-    
-    ### On ajoute le nouveau dataframe
-    Index_res <- rbind(Index_res, Index_pond)
-    ### On retire les lignes si elles sont déja présentes dans le csv
-    ### Par défaut, le nouveau résultat met à jour le précédent
-    Index_res <- Index_res[!duplicated(Index_res[ , 1:11], fromLast = T), ]
-    
-    ### On écrit le résulat dans le csv
-    write.csv2(Index_res,
-               "./Bases_de_donnees_finales/Indices_villes/Index_results_Smooth.csv",
-               row.names = F)
-  }
+  ### On ajoute le nouveau dataframe
+  Index_res <- rbind(Index_res, Index_pond)
+  ### On retire les lignes si elles sont déja présentes dans le csv
+  ### Par défaut, le nouveau résultat met à jour le précédent
+  Index_res <- Index_res[!duplicated(Index_res[ , 1:11], fromLast = T), ]
+  
+  ### On écrit le résulat dans le csv
+  write.csv2(Index_res,
+             "./Bases_de_donnees_finales/Indices_villes/Index_results.csv",
+            row.names = F)
+  
+
   
 }
     

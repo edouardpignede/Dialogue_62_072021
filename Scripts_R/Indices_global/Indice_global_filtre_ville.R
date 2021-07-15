@@ -147,7 +147,7 @@ Plot_index <- function(Index, ### Choix du port d'étude
   
   
   ### Ouverture d'une fenêtre pour l'enregistrement du graphique
-  png(filename = paste0("./Figures/Figure_indices/National/", Title, ".png"),
+  png(filename = paste0("./Figures/Figures_indices/National/", Title, ".png"),
       width = 5000,
       height = 2700,
       res = 500)

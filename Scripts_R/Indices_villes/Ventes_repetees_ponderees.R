@@ -26,7 +26,7 @@ source("./Scripts_R/Indices_villes/Filtrage.R")
 
 ### Cette fonction calcule l'index des ventes répétés à partir d'un objet Data retourné
 ### par la fonction Data_filtrage du script filtrage
-Calcul_index <- function(Data, Ponderation = T, Pond_log = F, Regression_type = "OLS", Smooth = F) {
+Calcul_index <- function(Data, Ponderation = T, Pond_log = F, Regression_type = "OLS") {
 
   ### Calcul des pondérations
   Product_pond <- Data %>%
@@ -114,11 +114,6 @@ Calcul_index <- function(Data, Ponderation = T, Pond_log = F, Regression_type = 
                               "Index" = 100*exp(c(0, reg$coefficients)),
                               row.names = NULL)
   
-  ### Réalise la moyenne mobile de l'indice sur l'ensemble de la période
-  if (Smooth) {
-    rt_pond_index$Index <- runmean(na.approx(rt_pond_index$Index), k = 3, 
-                                   alg = "C", endrule = "keep", align = "right")
-  }
   
   
   ### On retourne l'indice
@@ -139,20 +134,20 @@ Plot_index <- function(Index,
                        Remove_double = T, ### Retire-t-on les doublons
                        Ponderation = T, ### Calcul de l'indice avec ponderation ?
                        Pond_log = F,
-                       Smooth = F) 
+                       Baseline = F) 
   
 {
   
   ### Nom du fichier
   Title_file = paste0("Ville_", Ville, "+",
                       "Type_", Exports_imports, "+",
-                      "Outliers_", as.character(Outliers),  "+",
-                      "Outliers_coef_", as.character(Outliers_coef), "+",
-                      "Trans_number_", as.character(Trans_number), "+",
-                      "Prod_problems_", as.character(Prod_problems), "+",
-                      "Product_select_", as.character(Product_select), "+",
-                      "Remove_double_", as.character(Remove_double), "+",
-                      "Ponderation_", as.character(Ponderation), "+",
+                      "Outliers_", as.character(Outliers), "+", 
+                      "Out_coef_", as.character(Outliers_coef), "+",
+                      "Trans_", as.character(Trans_number), "+",
+                      "Prod_prob_", as.character(Prod_problems), "+",
+                      "Prod_select_", as.character(Product_select), "+",
+                      "Rem_dble_", as.character(Remove_double), "+",
+                      "Pond_", as.character(Ponderation), "+",
                       "Pond_log_", as.character(Pond_log))
   
   
@@ -169,17 +164,51 @@ Plot_index <- function(Index,
   
   
   ### Ouverture d'une fenêtre pour l'enregistrement du graphique
-  if (!Smooth) {
-    png(filename = paste0("./Figures/Figures_indices/", Title_file, ".png"),
+
+  png(filename = paste0("./Figures/Figures_indices/Indices_parametres/", Title_file, ".png"),
+      width = 5000,
+      height = 2700,
+      res = 500)
+    
+  ### Si Baseline == T, la figure est aussi ajouté au fichier Ports_baseline
+  if (Baseline) {
+    png(filename = paste0("./Figures/Figures_indices/Ports_baseline/Indice_", Ville, "_", Exports_imports, ".png"),
         width = 5000,
         height = 2700,
         res = 500)
     
-  } else {
-    png(filename = paste0("./Figures/Figures_indices/", Title_file, "_Smooth.png"),
-        width = 5000,
-        height = 2700,
-        res = 500)
+    # 1- Ouvrir une nouvelle fenêtre graphique
+    plot.new()
+    # 2- Programmer des marges larges pour l'ajout ultérieur des titres des axes
+    par(mar=c(4,4,3,4))
+    # 3- On récupère dans position la position de chaque barre
+    position = barplot(Index$Part_value, 
+                       col = rgb(0.220, 0.220, 0.220, alpha = 0.2),
+                       names.arg = Index$year,
+                       axes = F,
+                       ylab = "", xlab = "",
+                       main = Title_graph,
+                       ylim = c(0,1), 
+                       las = 2, space = 0, cex.main = 0.8)
+    # las = 2 : ce paramètre permet d'orienter le label de chaque barre verticalement
+    # 4- Configurer la couleur de l'axe de gauche (correspondant ici aux barres)
+    axis(4, col = "black", at = seq(0, 1, by = 0.2), lab = scales::percent(seq(0, 1, by = 0.2), accuracy = 1))
+    # 5- Superposer la courbe
+    par(new = TRUE, mar = c(4, 4, 3, 4))
+    maximal = max(position) + (position[2] - position[1])
+    plot(position[!is.na(Index$Index)], Index$Index[!is.na(Index$Index)], 
+         col = "black", type = "o", lwd = 2,
+         pch = 16, axes = F, ylab = "", xlab = "", 
+         xlim = c(0, length(Index$Index)),
+         ylim = c(min(Index$Index, na.rm = T) - 5, max(Index$Index, na.rm = T) + 5))
+    # 6- Configurer l'axe de droite, correspondant à la coube
+    axis(2, col.axis = "black", col = "black")
+    box();grid()
+    mtext("Index value",side=2,line=2,cex=1.1)
+    mtext("Part de la valeur dans le commerce", side = 4, col = "black", line = 2, cex = 1.1)
+    
+    ### Fermeture de la fenêtre
+    dev.off()
   }
   
 
@@ -236,8 +265,7 @@ Filter_calcul_index <- function(Ville,  ### Choix du port d'étude
                                 Pond_log = F, ### Si ponderation == T, pondère-t-on par le log de la part dans la valeur totale ?
                                 Correction_indice_Ag = T, #### Correction de l'indie par la aleur de l'Ag l'année observée
                                 Product_sector = "All", ### Utile uniquement pour la construction des indices par composition
-                                Partner = "All", ### Utile uniquement pour l'indice par partenaire (All, Europe_et_Méditérannée ou Reste_du_monde)
-                                Smooth = F) ### Réalisation de la moyenne courante de l'indice et approximation des valeurs manquantes
+                                Partner = "All") ### Utile uniquement pour l'indice par partenaire (All, Europe_et_Méditérannée ou Reste_du_monde)
 {
   ### Filtrage de la base de données avec la fonction du scrip Filtrage.R
   Data_filter <- Data_filtrage(Ville = Ville,  ### Choix du port d'étude
@@ -253,7 +281,7 @@ Filter_calcul_index <- function(Ville,  ### Choix du port d'étude
                                Partner = Partner) ### Utile uniquement pour l'indice par partenaire (All, Europe_et_Méditérannée ou Reste_du_monde)
                                
   ### Calcul de l'indice avec la fonction Calcul_index
-  rt_index <- Calcul_index(Data_filter, Ponderation = Ponderation, Pond_log = Pond_log, Smooth = Smooth)
+  rt_index <- Calcul_index(Data_filter, Ponderation = Ponderation, Pond_log = Pond_log)
   
   
 
@@ -270,12 +298,20 @@ Filter_calcul_index <- function(Ville,  ### Choix du port d'étude
                     all.y = F)
   
   if(Product_sector == "All" & Partner == "All") {
+    
+    if (Outliers == T & Outliers_coef == 10 & Trans_number == 0 & Prod_problems == F & Product_select == F
+    & Remove_double == T & Ponderation == T & Pond_log == F  & Correction_indice_Ag == T) {
+      Baseline = T
+    } else {
+      Baseline = F}
+    
+    
   ### On plot l'index avec la fonction Plot_index
     Plot_index(rt_index, Ville = Ville, Exports_imports = Exports_imports,
                Outliers = Outliers, Outliers_coef = Outliers_coef,
                Trans_number = Trans_number, Prod_problems = Prod_problems, 
                Product_select = Product_select, Remove_double = Remove_double,
-               Ponderation = Ponderation, Pond_log = Pond_log, Smooth = Smooth)
+               Ponderation = Ponderation, Pond_log = Pond_log, Baseline = Baseline)
   }
     
   ### On retourne l'indice obtenu
